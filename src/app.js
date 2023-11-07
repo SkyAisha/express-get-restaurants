@@ -18,18 +18,22 @@ app.get("/restaurants/:id", async (req, res) => {
 });
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 app.post("/restaurants", async (req, res) => {
-  const newRestaurant = await req.body;
+  const newRestaurant = await Restaurant.create(req.body);
+  res.send("New Restaurant");
 });
 
 app.put("/restaurants/:id", async (req, res) => {
-  const id = res.params.id;
-  const updatedRestaurant = await req.body;
+  const updatedRestaurant = await Restaurant.update(req.body, {
+    where: { id: req.params.id },
+  });
+  res.send("Restaurant updated");
 });
 
 app.delete("/restaurants/:id", async (req, res) => {
-  const id = req.params.id;
+  await Restaurant.destroy({ where: { id: req.params.id } });
+  res.send("Restaurant deleted");
 });
 module.exports = app;
