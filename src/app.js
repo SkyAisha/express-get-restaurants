@@ -11,4 +11,25 @@ app.get("/restaurants", async (request, response) => {
   response.json(restaurants);
 });
 
+app.get("/restaurants/:id", async (req, res) => {
+  const id = req.params.id;
+  const foundRestaurant = await Restaurant.findByPk(id);
+  res.json(foundRestaurant);
+});
+
+app.use(express.json());
+app.use(express.urlencoded());
+
+app.post("/restaurants", async (req, res) => {
+  const newRestaurant = await req.body;
+});
+
+app.put("/restaurants/:id", async (req, res) => {
+  const id = res.params.id;
+  const updatedRestaurant = await req.body;
+});
+
+app.delete("/restaurants/:id", async (req, res) => {
+  const id = req.params.id;
+});
 module.exports = app;
