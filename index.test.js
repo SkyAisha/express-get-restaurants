@@ -30,6 +30,38 @@ describe("./restaurant endpoint", () => {
     expect(typeof response.body).toEqual("object");
   });
 
+  it("Should return error if name field is empty", async () => {
+    const restaurant = {
+      location: "New York",
+      cuisine: "Korean",
+    };
+    const response = await request(app).post("/restaurants").send(restaurant);
+    expect(Array.isArray(response.body.error)).toBe(true);
+  });
+
+  it("Should return error if location field is empty", async () => {
+    const restaurant = {
+      name: "Noodle Haven",
+      cuisine: "Korean",
+    };
+    const response = await request(app).post("/restaurants").send(restaurant);
+    expect(Array.isArray(response.body.error)).toBe(true);
+  });
+
+  it("Should return error if cuisine field is empty", async () => {
+    const restaurant = {
+      name: "Noodle Haven",
+      location: "New York",
+    };
+    const response = await request(app).post("/restaurants").send(restaurant);
+    expect(Array.isArray(response.body.error)).toBe(true);
+  });
+  it("Should return error if all fields are empty", async () => {
+    const restaurant = {};
+    const response = await request(app).post("/restaurants").send(restaurant);
+    expect(Array.isArray(response.body.error)).toBe(true);
+  });
+
   it("PUT should update restaurant", async () => {
     const updatedRestaurant = {
       name: "LittleLamb",
